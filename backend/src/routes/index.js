@@ -17,7 +17,10 @@
  * Admin routes — need auth + admin middleware (role must be 'admin').
  */
 const express = require('express');
+const mongoose = require('mongoose');
 const { sendSuccess } = require('../utils/apiResponse');
+const scanRoutes = require('../utils/routeScanner');
+const renderHtmlHomepage = require('../utils/homepageRenderer');
 
 const gameRoutes = require('./game.routes');
 const filterRoutes = require('./filter.routes');
@@ -30,6 +33,37 @@ const adminRoutes = require('./admin.routes');
 const gameController = require('../controllers/game.controller');
 
 const router = express.Router();
+
+// ─── API Homepage (Content Negotiated) ───────────────────────────────────────
+
+/** GET / — Main Landing and Developer API Hub */
+router.get('/', (req, res) => {
+  // 1. Crawl all live active routes from the running Express application
+  const scan = scanRoutes(req.app);
+  
+  // 2. Fetch database readyState and system uptime
+  const dbState = mongoose.connection.readyState;
+  const uptime = process.uptime();
+
+  // 3. Content Negotiation: Check for explicit JSON query or Accept headers
+  const isJsonRequest = 
+    req.query.format === 'json' || 
+    (req.headers.accept && req.headers.accept.includes('application/json'));
+
+  if (isJsonRequest) {
+    return sendSuccess(res, 200, 'Backend API is running successfully 🚀', {
+      environment: process.env.NODE_ENV || 'development',
+      dbStatus: dbState === 1 ? 'connected' : 'disconnected',
+      uptime,
+      totalRoutes: scan.totalCount,
+      routes: scan.sections
+    });
+  }
+
+  // 4. Default to beautiful premium browser-ready developer dashboard
+  res.setHeader('Content-Type', 'text/html');
+  return res.status(200).send(renderHtmlHomepage(scan, dbState, uptime));
+});
 
 // ─── Health & system (public) ────────────────────────────────────────────────
 
