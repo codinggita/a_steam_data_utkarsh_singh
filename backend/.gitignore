@@ -1,0 +1,10 @@
+# Dependencies installed by npm — we never commit this folder because it is huge and reproducible.
+node_modules/
+
+# Local environment secrets — never commit real passwords or JWT secrets.
+.env
+
+# Logs and OS noise.
+npm-debug.log*
+.DS_Store
+Thumbs.db
