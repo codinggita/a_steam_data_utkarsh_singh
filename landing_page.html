@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>STEAM OPERATIONAL SYSTEM // DECODE THE DATABASE</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700;900&amp;family=Inter:wght@400;700&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#D90429",
+                        canvas: "#EAE7DC",
+                        ink: "#000000",
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0px",
+                        "lg": "0px",
+                        "xl": "0px",
+                        "full": "0px"
+                    },
+                    fontFamily: {
+                        headline: ["Public Sans", "sans-serif"],
+                        display: ["Public Sans", "sans-serif"],
+                        body: ["Inter", "sans-serif"],
+                        mono: ["JetBrains Mono", "monospace"],
+                        label: ["Public Sans", "sans-serif"]
+                    },
+                    boxShadow: {
+                        'brutalist': '4px 4px 0px 0px rgba(0,0,0,1)',
+                        'brutalist-hover': '2px 2px 0px 0px rgba(0,0,0,1)',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #EAE7DC;
+            color: #000000;
+            cursor: crosshair;
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 0;
+        }
+        .scanline {
+            width: 100%;
+            height: 2px;
+            background: rgba(217, 4, 41, 0.1);
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            animation: scan 4s linear infinite;
+        }
+        @keyframes scan {
+            0% { top: 0; }
+            100% { top: 100%; }
+        }
+    </style>
+</head>
+<body class="font-body selection:bg-primary selection:text-white">
+<!-- TopAppBar Execution from JSON -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 py-4 bg-[#EAE7DC] dark:bg-black border-b-2 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+<div class="flex items-center gap-4">
+<span class="text-xl font-headline font-black text-black dark:text-white uppercase tracking-tighter">
+                MOMENTUM OS v4.0.12 // ENCRYPTED CHANNEL
+            </span>
+</div>
+<nav class="hidden md:flex gap-8 items-center">
+<a class="text-[#D90429] font-bold font-headline uppercase tracking-tighter hover:bg-[#D90429] hover:text-white transition-none px-2 py-1" href="#">Dashboard</a>
+<a class="text-black dark:text-white font-headline uppercase tracking-tighter hover:bg-[#D90429] hover:text-white transition-none px-2 py-1" href="#">Registry</a>
+<a class="text-black dark:text-white font-headline uppercase tracking-tighter hover:bg-[#D90429] hover:text-white transition-none px-2 py-1" href="#">Protocols</a>
+<div class="flex items-center gap-4 border-l-2 border-black pl-6">
+<span class="material-symbols-outlined text-black cursor-pointer active:translate-x-[2px] active:translate-y-[2px]" data-icon="lock">lock</span>
+<span class="material-symbols-outlined text-black cursor-pointer active:translate-x-[2px] active:translate-y-[2px]" data-icon="settings">settings</span>
+</div>
+</nav>
+</header>
+<!-- SideNav Execution from JSON (Hidden on Mobile, as per Responsive Pivot) -->
+<aside class="hidden md:flex fixed left-0 top-0 h-full pt-20 flex-col z-40 bg-[#EAE7DC] dark:bg-black w-64 border-r-2 border-black dark:border-white font-label font-bold uppercase">
+<div class="p-6 border-b-2 border-black">
+<h2 class="text-lg font-headline font-black text-[#D90429]">OPERATOR</h2>
+<p class="text-xs opacity-60">CLEARANCE LEVEL 5</p>
+</div>
+<div class="flex-grow">
+<!-- Active State Logic: Dashboard -->
+<a class="bg-[#D90429] text-white border-2 border-black -ml-2 p-3 w-[calc(100%+8px)] flex items-center gap-3" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+                Dashboard
+            </a>
+<a class="flex items-center gap-3 p-3 border-b border-black dark:border-white text-black dark:text-white hover:bg-black hover:text-white transition-none" href="#">
+<span class="material-symbols-outlined" data-icon="gavel">gavel</span>
+                Penal Code
+            </a>
+<a class="flex items-center gap-3 p-3 border-b border-black dark:border-white text-black dark:text-white hover:bg-black hover:text-white transition-none" href="#">
+<span class="material-symbols-outlined" data-icon="folder_shared">folder_shared</span>
+                Case Files
+            </a>
+<a class="flex items-center gap-3 p-3 border-b border-black dark:border-white text-black dark:text-white hover:bg-black hover:text-white transition-none" href="#">
+<span class="material-symbols-outlined" data-icon="enhanced_encryption">enhanced_encryption</span>
+                Encrypted Mail
+            </a>
+<a class="flex items-center gap-3 p-3 border-b border-black dark:border-white text-black dark:text-white hover:bg-black hover:text-white transition-none" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+                Legal Archive
+            </a>
+</div>
+<div class="p-4 border-t-2 border-black bg-black text-white cursor-pointer hover:bg-primary transition-none text-center">
+            TERMINATE SESSION
+        </div>
+<div class="p-3 flex justify-around border-t border-black">
+<span class="material-symbols-outlined hover:text-primary cursor-pointer" data-icon="terminal">terminal</span>
+<span class="material-symbols-outlined hover:text-primary cursor-pointer" data-icon="help_center">help_center</span>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="md:ml-64 pt-20 min-h-screen relative overflow-hidden">
+<div class="scanline"></div>
+<!-- Hero Section -->
+<section class="bento-grid min-h-[90vh] border-b-2 border-black">
+<!-- Text Content -->
+<div class="col-span-12 lg:col-span-7 p-8 lg:p-16 flex flex-col justify-center border-r-0 lg:border-r-2 border-black bg-[#EAE7DC] relative">
+<div class="absolute top-4 left-4 font-mono text-[10px] opacity-30">SYSTEM_ID: STEAM_CORE_ALPHA</div>
+<h1 class="font-headline font-black text-6xl md:text-8xl lg:text-9xl leading-[0.85] tracking-tighter uppercase mb-6">
+                    DECODE THE <span class="text-primary">DATABASE</span>
+</h1>
+<p class="font-body text-xl md:text-2xl max-w-xl mb-10 border-l-4 border-primary pl-6 py-2">
+                    Industrial-grade management for the global gaming registry. Execute CRUD protocols with mathematical precision.
+                </p>
+<div class="flex flex-wrap gap-4">
+<button class="bg-primary text-white font-headline font-black text-2xl px-10 py-6 border-2 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-none uppercase">
+                        JOIN THE FRONT
+                    </button>
+<button class="bg-black text-white font-headline font-black text-2xl px-10 py-6 border-2 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-none uppercase">
+                        VIEW MANIFESTO
+                    </button>
+</div>
+<div class="mt-16 grid grid-cols-3 gap-8 border-t-2 border-black pt-8">
+<div>
+<div class="font-mono text-xs mb-1">DATA_STREAM</div>
+<div class="font-headline font-black text-3xl">99.9%</div>
+<div class="text-[10px] uppercase font-bold">Uptime Efficiency</div>
+</div>
+<div>
+<div class="font-mono text-xs mb-1">LATENCY</div>
+<div class="font-headline font-black text-3xl">0.02ms</div>
+<div class="text-[10px] uppercase font-bold">Execution Speed</div>
+</div>
+<div>
+<div class="font-mono text-xs mb-1">CLEARANCE</div>
+<div class="font-headline font-black text-3xl">LVL 5</div>
+<div class="text-[10px] uppercase font-bold">Encrypted Access</div>
+</div>
+</div>
+</div>
+<!-- Hero Image -->
+<div class="col-span-12 lg:col-span-5 relative bg-black overflow-hidden flex items-center justify-center">
+<img alt="Industrial gears" class="w-full h-full object-cover mix-blend-lighten opacity-80 grayscale contrast-150" src="https://lh3.googleusercontent.com/aida/AP1WRLu3GwAK0MImSKRbYWcp7qN0O099cHYxMvme0uQ0WSyAZuKffpf6HH7Jm7TxXgSQRO_N76pIB9X9rlJ6yMiHet6YOp6YLH2il-kPpvc3crE8aiNaPPyshJhvjy6CK9QAB8mTphX8uORhenBxy1N3HaRV_8b_UDD8QdmEEiViQ2BXVCyqjxQ45cMWEgvXPDBqprwsONBFRIXfEmNuhVtAxDctLUUXNGKz76bimnr_m0GcP3OXxk0FESoCK50"/>
+<div class="absolute inset-0 bg-primary/10 mix-blend-multiply"></div>
+<div class="absolute bottom-6 right-6 bg-white border-2 border-black p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] max-w-xs">
+<p class="font-mono text-[10px] leading-tight">
+                        [UNIT_18] THERMAL RECYCLER CORE. MAINTAIN OPERATIONAL INTEGRITY AT ALL COSTS. UNAUTHORIZED ACCESS IS PROHIBITED BY ORDER OF THE COUNCIL.
+                    </p>
+</div>
+</div>
+</section>
+<!-- Bento Grid Features Section -->
+<section class="bg-black text-white">
+<div class="grid grid-cols-1 md:grid-cols-3">
+<!-- Feature 1 -->
+<div class="p-12 border-r-2 border-b-2 border-white/20 hover:bg-primary transition-colors group relative overflow-hidden">
+<span class="material-symbols-outlined text-6xl mb-6 block group-hover:scale-110 transition-transform" data-icon="precision_manufacturing">precision_manufacturing</span>
+<h3 class="font-headline font-black text-3xl mb-4 uppercase">FORGED PRECISION</h3>
+<p class="font-body text-sm opacity-70 group-hover:opacity-100">Our engine executes registry alterations with zero margin for error. Every byte is accounted for, every transaction hardened against failure.</p>
+<div class="absolute -bottom-4 -right-4 font-black text-8xl text-white/5 uppercase select-none">01</div>
+</div>
+<!-- Feature 2 -->
+<div class="p-12 border-r-2 border-b-2 border-white/20 hover:bg-primary transition-colors group relative overflow-hidden">
+<span class="material-symbols-outlined text-6xl mb-6 block group-hover:scale-110 transition-transform" data-icon="security">security</span>
+<h3 class="font-headline font-black text-3xl mb-4 uppercase">ENCRYPTED CORE</h3>
+<p class="font-body text-sm opacity-70 group-hover:opacity-100">Layered verification protocols ensure that only the validated operators can touch the central pillar of the registry. Total isolation.</p>
+<div class="absolute -bottom-4 -right-4 font-black text-8xl text-white/5 uppercase select-none">02</div>
+</div>
+<!-- Feature 3 -->
+<div class="p-12 border-b-2 border-white/20 hover:bg-primary transition-colors group relative overflow-hidden">
+<span class="material-symbols-outlined text-6xl mb-6 block group-hover:scale-110 transition-transform" data-icon="speed">speed</span>
+<h3 class="font-headline font-black text-3xl mb-4 uppercase">KINETIC THROUGHPUT</h3>
+<p class="font-body text-sm opacity-70 group-hover:opacity-100">Designed for massive scale. The Steam Operational System handles millions of concurrent requests without breaking the structural flow.</p>
+<div class="absolute -bottom-4 -right-4 font-black text-8xl text-white/5 uppercase select-none">03</div>
+</div>
+</div>
+</section>
+<!-- Operational Log / Data Table Section -->
+<section class="p-8 lg:p-16 bg-[#EAE7DC]">
+<div class="flex justify-between items-end mb-8 border-b-4 border-black pb-4">
+<div>
+<h2 class="font-headline font-black text-5xl uppercase tracking-tighter">OPERATIONAL_LOG</h2>
+<p class="font-mono text-sm uppercase opacity-60">Live feedback from the central processing unit</p>
+</div>
+<div class="hidden md:block font-mono text-xs text-right">
+                    REF_TIMESTAMP: 0x442-A<br/>
+                    STATUS: <span class="text-primary font-bold">NOMINAL</span>
+</div>
+</div>
+<div class="overflow-x-auto border-2 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+<table class="w-full text-left font-mono text-xs">
+<thead>
+<tr class="bg-black text-white uppercase border-b-2 border-black">
+<th class="p-4 border-r border-white/20">PID</th>
+<th class="p-4 border-r border-white/20">PROTOCOL</th>
+<th class="p-4 border-r border-white/20">LOCATION</th>
+<th class="p-4 border-r border-white/20">OPERATOR</th>
+<th class="p-4">STATUS</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-black/10">
+<tr class="hover:bg-primary/10">
+<td class="p-4 border-r border-black/10">#9821</td>
+<td class="p-4 border-r border-black/10">DATABASE_SCAN</td>
+<td class="p-4 border-r border-black/10">SECTOR_7G</td>
+<td class="p-4 border-r border-black/10">USER_402</td>
+<td class="p-4 text-green-700 font-bold">SUCCESS</td>
+</tr>
+<tr class="bg-white/50 hover:bg-primary/10">
+<td class="p-4 border-r border-black/10">#9822</td>
+<td class="p-4 border-r border-black/10">ENCRYPTION_WIPE</td>
+<td class="p-4 border-r border-black/10">VAULT_01</td>
+<td class="p-4 border-r border-black/10">SYSTEM_ROOT</td>
+<td class="p-4 text-primary font-bold">PENDING</td>
+</tr>
+<tr class="hover:bg-primary/10">
+<td class="p-4 border-r border-black/10">#9823</td>
+<td class="p-4 border-r border-black/10">REGISTRY_COMMIT</td>
+<td class="p-4 border-r border-black/10">GLOBAL_NODE</td>
+<td class="p-4 border-r border-black/10">USER_881</td>
+<td class="p-4 text-green-700 font-bold">SUCCESS</td>
+</tr>
+<tr class="bg-white/50 hover:bg-primary/10">
+<td class="p-4 border-r border-black/10">#9824</td>
+<td class="p-4 border-r border-black/10">CRUD_EXECUTION</td>
+<td class="p-4 border-r border-black/10">ARCHIVE_A</td>
+<td class="p-4 border-r border-black/10">USER_104</td>
+<td class="p-4 text-green-700 font-bold">SUCCESS</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="bg-primary text-white p-12 lg:p-24 text-center border-t-2 border-black relative overflow-hidden">
+<div class="relative z-10">
+<h2 class="font-headline font-black text-5xl md:text-7xl mb-8 uppercase leading-none">READY FOR THE FRONT?</h2>
+<p class="font-body text-xl max-w-2xl mx-auto mb-12 opacity-90">
+                    Secure your terminal clearance and begin managing the global registry today. The machine waits for no one.
+                </p>
+<div class="flex justify-center gap-6">
+<button class="bg-black text-white font-headline font-black text-3xl px-12 py-6 border-4 border-white hover:bg-white hover:text-black transition-none active:translate-y-1">
+                        INITIALIZE NOW
+                    </button>
+</div>
+</div>
+<!-- Decorative Background Text -->
+<div class="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none">
+<span class="font-black text-[20vw] select-none">STEAM_OS</span>
+</div>
+</section>
+<!-- Footer -->
+<footer class="p-8 bg-[#EAE7DC] border-t-2 border-black flex flex-col md:flex-row justify-between items-center gap-8">
+<div class="font-headline font-black text-2xl uppercase italic">STEAM OPERATIONAL SYSTEM</div>
+<div class="font-mono text-[10px] flex gap-8">
+<a class="hover:text-primary underline" href="#">PROTOCOL_DATA</a>
+<a class="hover:text-primary underline" href="#">TERMINAL_USAGE</a>
+<a class="hover:text-primary underline" href="#">LEGAL_CLEARANCE</a>
+</div>
+<div class="font-mono text-[10px] opacity-60">
+                © 1924-2024 CONSTRUCT_CORP. ALL RIGHTS RESERVED.
+            </div>
+</footer>
+</main>
+<script>
+        // Micro-interactions and data simulations
+        document.addEventListener('DOMContentLoaded', () => {
+            const tableRows = document.querySelectorAll('tbody tr');
+            
+            // Random highlight effect to simulate "live" data
+            setInterval(() => {
+                const randomRow = tableRows[Math.floor(Math.random() * tableRows.length)];
+                randomRow.classList.add('bg-primary/20');
+                setTimeout(() => {
+                    randomRow.classList.remove('bg-primary/20');
+                }, 1000);
+            }, 3000);
+
+            // Button active states are handled by Tailwind's active: utility
+            console.log("STEAM_OS: Kernel Initialized. Welcome, Operator.");
+        });
+    </script>
+</body></html>

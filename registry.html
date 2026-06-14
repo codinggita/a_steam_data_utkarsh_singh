@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>GAME REGISTRY // CORE DATABASE</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700;900&amp;family=Inter:wght@400;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#D90429",
+                        canvas: "#EAE7DC",
+                    },
+                    fontFamily: {
+                        headline: ["Public Sans", "sans-serif"],
+                        display: ["Public Sans", "sans-serif"],
+                        body: ["Inter", "sans-serif"],
+                        label: ["Public Sans", "sans-serif"],
+                        mono: ["JetBrains Mono", "monospace"]
+                    },
+                    boxShadow: {
+                        'brutalist': '4px 4px 0px 0px rgba(0,0,0,1)',
+                        'brutalist-hover': '2px 2px 0px 0px rgba(0,0,0,1)',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body {
+            background-color: #EAE7DC;
+            color: #000000;
+        }
+        /* Custom scrollbar for brutalist look */
+        ::-webkit-scrollbar { width: 12px; }
+        ::-webkit-scrollbar-track { background: #EAE7DC; border-left: 2px solid #000000; }
+        ::-webkit-scrollbar-thumb { background: #000000; border: 2px solid #EAE7DC; }
+    </style>
+</head>
+<body class="font-body antialiased overflow-x-hidden">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 py-4 bg-[#EAE7DC] dark:bg-black border-b-2 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+<div class="text-xl font-headline font-black text-black dark:text-white uppercase tracking-tighter">
+            MOMENTUM OS v4.0.12 // ENCRYPTED CHANNEL
+        </div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex gap-4 font-label font-bold uppercase text-black dark:text-white">
+<span class="text-[#D90429] font-bold">Registry</span>
+<span class="hover:bg-[#D90429] hover:text-white transition-none px-1 cursor-pointer">Protocol</span>
+<span class="hover:bg-[#D90429] hover:text-white transition-none px-1 cursor-pointer">Uplink</span>
+</div>
+<div class="flex gap-3">
+<button class="material-symbols-outlined text-[#000000] dark:text-[#EAE7DC] hover:bg-[#D90429] hover:text-white active:translate-x-[2px] active:translate-y-[2px] active:shadow-none p-1">lock</button>
+<button class="material-symbols-outlined text-[#000000] dark:text-[#EAE7DC] hover:bg-[#D90429] hover:text-white active:translate-x-[2px] active:translate-y-[2px] active:shadow-none p-1">settings</button>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full pt-20 flex flex-col z-40 bg-[#EAE7DC] dark:bg-black border-r-2 border-black dark:border-white w-64 hidden lg:flex">
+<div class="p-6 border-b-2 border-black">
+<div class="text-lg font-headline font-black text-[#D90429] uppercase">OPERATOR</div>
+<div class="font-label font-bold uppercase text-xs opacity-70">CLEARANCE LEVEL 5</div>
+</div>
+<nav class="flex-1">
+<div class="bg-[#D90429] text-white border-2 border-black -ml-2 p-3 w-[calc(100%+8px)] flex items-center gap-3 font-label font-bold uppercase">
+<span class="material-symbols-outlined">dashboard</span> Dashboard
+            </div>
+<a class="flex items-center gap-3 p-3 border-b border-black dark:border-white text-black dark:text-white font-label font-bold uppercase hover:bg-black hover:text-white transition-none" href="#">
+<span class="material-symbols-outlined">gavel</span> Penal Code
+            </a>
+<a class="flex items-center gap-3 p-3 border-b border-black dark:border-white text-black dark:text-white font-label font-bold uppercase hover:bg-black hover:text-white transition-none" href="#">
+<span class="material-symbols-outlined">folder_shared</span> Case Files
+            </a>
+<a class="flex items-center gap-3 p-3 border-b border-black dark:border-white text-black dark:text-white font-label font-bold uppercase hover:bg-black hover:text-white transition-none" href="#">
+<span class="material-symbols-outlined">enhanced_encryption</span> Encrypted Mail
+            </a>
+<a class="flex items-center gap-3 p-3 border-b border-black dark:border-white text-black dark:text-white font-label font-bold uppercase hover:bg-black hover:text-white transition-none" href="#">
+<span class="material-symbols-outlined">inventory_2</span> Legal Archive
+            </a>
+</nav>
+<div class="p-4 mt-auto border-t-2 border-black">
+<button class="w-full bg-black text-white py-3 font-headline font-black uppercase tracking-widest hover:bg-[#D90429] transition-colors shadow-brutalist active:shadow-none active:translate-x-1 active:translate-y-1">
+                TERMINATE SESSION
+            </button>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="lg:ml-64 pt-24 px-6 pb-12">
+<div class="max-w-7xl mx-auto">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+<div>
+<h1 class="font-headline font-black text-6xl md:text-8xl uppercase tracking-tighter leading-none mb-2">GAME REGISTRY</h1>
+<div class="inline-block bg-black text-[#EAE7DC] px-4 py-1 font-mono text-xl font-bold">
+                        CORE DATABASE // ACCESS_GRANTED
+                    </div>
+</div>
+<div class="flex gap-4">
+<button class="bg-[#D90429] text-white px-6 py-4 font-headline font-black uppercase tracking-tighter border-2 border-black shadow-brutalist hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] active:translate-x-1 active:translate-y-1 active:shadow-none transition-all flex items-center gap-2">
+<span class="material-symbols-outlined">radar</span> EXECUTE SCAN
+                    </button>
+<button class="bg-white text-black px-6 py-4 font-headline font-black uppercase tracking-tighter border-2 border-black shadow-brutalist hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] active:translate-x-1 active:translate-y-1 active:shadow-none transition-all flex items-center gap-2">
+<span class="material-symbols-outlined">terminal</span> EXPORT LOG
+                    </button>
+</div>
+</div>
+<!-- Bento Filter System -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+<!-- Genre Filter -->
+<div class="md:col-span-2 border-4 border-black p-6 bg-white shadow-brutalist relative overflow-hidden group">
+<div class="absolute -right-4 -top-4 opacity-5 pointer-events-none group-hover:opacity-10 transition-opacity">
+<span class="material-symbols-outlined text-[120px]">filter_list</span>
+</div>
+<h3 class="font-headline font-black text-2xl uppercase mb-4 flex items-center gap-2">
+<span class="w-3 h-3 bg-[#D90429]"></span> GENRE SELECTION
+                    </h3>
+<div class="flex flex-wrap gap-2">
+<button class="px-4 py-2 border-2 border-black bg-black text-white font-label font-bold uppercase text-sm">Action</button>
+<button class="px-4 py-2 border-2 border-black bg-white text-black font-label font-bold uppercase text-sm hover:bg-[#D90429] hover:text-white transition-none">Horror</button>
+<button class="px-4 py-2 border-2 border-black bg-white text-black font-label font-bold uppercase text-sm hover:bg-[#D90429] hover:text-white transition-none">Indie</button>
+<button class="px-4 py-2 border-2 border-black bg-white text-black font-label font-bold uppercase text-sm hover:bg-[#D90429] hover:text-white transition-none">RPG</button>
+<button class="px-4 py-2 border-2 border-black bg-white text-black font-label font-bold uppercase text-sm hover:bg-[#D90429] hover:text-white transition-none">Simulation</button>
+</div>
+</div>
+<!-- Platform Filter -->
+<div class="md:col-span-1 border-4 border-black p-6 bg-white shadow-brutalist">
+<h3 class="font-headline font-black text-2xl uppercase mb-4 flex items-center gap-2">
+<span class="w-3 h-3 bg-black"></span> PLATFORM
+                    </h3>
+<select class="w-full border-2 border-black p-2 font-label font-bold uppercase focus:ring-0 focus:border-[#D90429] rounded-none bg-[#EAE7DC]">
+<option>ALL SYSTEMS</option>
+<option>PC / WINDOWS</option>
+<option>NEURAL LINK</option>
+<option>VIRTUAL CONSOLE</option>
+</select>
+</div>
+<!-- System Stats -->
+<div class="md:col-span-1 border-4 border-black p-6 bg-[#D90429] text-white shadow-brutalist flex flex-col justify-between">
+<div class="font-mono text-xs uppercase opacity-80">System.integrity</div>
+<div class="font-headline font-black text-4xl">98.4%</div>
+<div class="w-full bg-black h-2 mt-2">
+<div class="bg-white h-full w-[98.4%]"></div>
+</div>
+</div>
+</div>
+<!-- Data Table Container -->
+<div class="border-4 border-black bg-white shadow-brutalist overflow-hidden">
+<div class="bg-black text-white p-4 font-headline font-black uppercase flex justify-between items-center">
+<span>ACTIVE REGISTRY ENTRIES [12,409 TOTAL]</span>
+<span class="font-mono text-sm">TIMESTAMP: 2024.11.05.04:12:01</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full border-collapse">
+<thead>
+<tr class="bg-[#EAE7DC] border-b-4 border-black">
+<th class="p-4 text-left font-headline font-black uppercase text-sm border-r-2 border-black">APPID</th>
+<th class="p-4 text-left font-headline font-black uppercase text-sm border-r-2 border-black">TITLE</th>
+<th class="p-4 text-left font-headline font-black uppercase text-sm border-r-2 border-black">GENRE</th>
+<th class="p-4 text-left font-headline font-black uppercase text-sm border-r-2 border-black">PRICE</th>
+<th class="p-4 text-left font-headline font-black uppercase text-sm">RATING</th>
+</tr>
+</thead>
+<tbody class="font-mono text-sm">
+<tr class="border-b-2 border-black hover:bg-[#D90429]/10 transition-colors group">
+<td class="p-4 border-r-2 border-black font-bold">#124562</td>
+<td class="p-4 border-r-2 border-black font-headline font-black text-lg uppercase tracking-tight">ELDEN RING</td>
+<td class="p-4 border-r-2 border-black"><span class="bg-black text-white px-2 py-0.5">RPG</span></td>
+<td class="p-4 border-r-2 border-black">$59.99</td>
+<td class="p-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-[#D90429]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-bold">96/100</span>
+</td>
+</tr>
+<tr class="border-b-2 border-black hover:bg-[#D90429]/10 transition-colors group">
+<td class="p-4 border-r-2 border-black font-bold">#109150</td>
+<td class="p-4 border-r-2 border-black font-headline font-black text-lg uppercase tracking-tight">CYBERPUNK 2077</td>
+<td class="p-4 border-r-2 border-black"><span class="bg-black text-white px-2 py-0.5">ACTION</span></td>
+<td class="p-4 border-r-2 border-black">$49.99</td>
+<td class="p-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-[#D90429]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-bold">86/100</span>
+</td>
+</tr>
+<tr class="border-b-2 border-black hover:bg-[#D90429]/10 transition-colors group">
+<td class="p-4 border-r-2 border-black font-bold">#004219</td>
+<td class="p-4 border-r-2 border-black font-headline font-black text-lg uppercase tracking-tight">HOLLOW KNIGHT</td>
+<td class="p-4 border-r-2 border-black"><span class="bg-black text-white px-2 py-0.5">INDIE</span></td>
+<td class="p-4 border-r-2 border-black">$14.99</td>
+<td class="p-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-[#D90429]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-bold">90/100</span>
+</td>
+</tr>
+<tr class="border-b-2 border-black hover:bg-[#D90429]/10 transition-colors group">
+<td class="p-4 border-r-2 border-black font-bold">#992831</td>
+<td class="p-4 border-r-2 border-black font-headline font-black text-lg uppercase tracking-tight">RESIDENT EVIL VILLAGE</td>
+<td class="p-4 border-r-2 border-black"><span class="bg-black text-white px-2 py-0.5">HORROR</span></td>
+<td class="p-4 border-r-2 border-black">$39.99</td>
+<td class="p-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-[#D90429]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-bold">84/100</span>
+</td>
+</tr>
+<tr class="border-b-2 border-black hover:bg-[#D90429]/10 transition-colors group">
+<td class="p-4 border-r-2 border-black font-bold">#001122</td>
+<td class="p-4 border-r-2 border-black font-headline font-black text-lg uppercase tracking-tight">HADES</td>
+<td class="p-4 border-r-2 border-black"><span class="bg-black text-white px-2 py-0.5">INDIE</span></td>
+<td class="p-4 border-r-2 border-black">$24.99</td>
+<td class="p-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-[#D90429]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-bold">93/100</span>
+</td>
+</tr>
+<tr class="border-b-2 border-black hover:bg-[#D90429]/10 transition-colors group">
+<td class="p-4 border-r-2 border-black font-bold">#773344</td>
+<td class="p-4 border-r-2 border-black font-headline font-black text-lg uppercase tracking-tight">RED DEAD REDEMPTION 2</td>
+<td class="p-4 border-r-2 border-black"><span class="bg-black text-white px-2 py-0.5">ACTION</span></td>
+<td class="p-4 border-r-2 border-black">$59.99</td>
+<td class="p-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-[#D90429]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-bold">97/100</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-4 border-t-4 border-black bg-[#EAE7DC] flex justify-between items-center font-label font-bold uppercase">
+<div class="flex gap-4">
+<button class="px-3 py-1 border-2 border-black hover:bg-black hover:text-white transition-none">PREV</button>
+<button class="px-3 py-1 border-2 border-black bg-black text-white transition-none">1</button>
+<button class="px-3 py-1 border-2 border-black hover:bg-black hover:text-white transition-none">2</button>
+<button class="px-3 py-1 border-2 border-black hover:bg-black hover:text-white transition-none">3</button>
+<span class="py-1">...</span>
+<button class="px-3 py-1 border-2 border-black hover:bg-black hover:text-white transition-none">NEXT</button>
+</div>
+<div class="text-sm">SHOWING 6 OF 12,409 RESULTS</div>
+</div>
+</div>
+<!-- Bottom Dashboard Info -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+<div class="p-4 border-2 border-black bg-white flex items-center gap-4">
+<div class="bg-black text-white p-3">
+<span class="material-symbols-outlined">memory</span>
+</div>
+<div>
+<div class="text-xs font-mono uppercase opacity-60">CPU_USAGE</div>
+<div class="font-headline font-black text-2xl">42.8%</div>
+</div>
+</div>
+<div class="p-4 border-2 border-black bg-white flex items-center gap-4">
+<div class="bg-[#D90429] text-white p-3">
+<span class="material-symbols-outlined">dns</span>
+</div>
+<div>
+<div class="text-xs font-mono uppercase opacity-60">NET_STATUS</div>
+<div class="font-headline font-black text-2xl uppercase">Connected</div>
+</div>
+</div>
+<div class="p-4 border-2 border-black bg-white flex items-center gap-4">
+<div class="bg-black text-white p-3">
+<span class="material-symbols-outlined">update</span>
+</div>
+<div>
+<div class="text-xs font-mono uppercase opacity-60">NEXT_SYNC</div>
+<div class="font-headline font-black text-2xl">00:14:59</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Visual Accents -->
+<div class="fixed bottom-6 right-6 pointer-events-none z-10 opacity-20">
+<h2 class="font-headline font-black text-[120px] leading-none uppercase select-none">MOMENTUM</h2>
+</div>
+<script>
+        // Simple micro-interaction for the "Execute Scan" button
+        const scanBtn = document.querySelector('button:contains("EXECUTE SCAN")');
+        if (scanBtn) {
+            scanBtn.addEventListener('click', () => {
+                scanBtn.innerText = "SCANNING...";
+                setTimeout(() => {
+                    scanBtn.innerHTML = '<span class="material-symbols-outlined">radar</span> EXECUTE SCAN';
+                }, 2000);
+            });
+        }
+
+        // Custom selector logic for buttons
+        document.querySelectorAll('.flex.flex-wrap.gap-2 button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                this.parentElement.querySelectorAll('button').forEach(b => {
+                    b.classList.remove('bg-black', 'text-white');
+                    b.classList.add('bg-white', 'text-black');
+                });
+                this.classList.remove('bg-white', 'text-black');
+                this.classList.add('bg-black', 'text-white');
+            });
+        });
+    </script>
+</body></html>
