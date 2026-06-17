@@ -39,7 +39,21 @@ api.interceptors.response.use(
     }
     
     // Normalize error message
-    const message = error.response?.data?.message || error.response?.data?.error || error.message || 'Something went wrong';
+    let message = 'Something went wrong';
+    if (error.response?.data) {
+      const data = error.response.data;
+      if (typeof data.error === 'string') {
+        message = data.error;
+      } else if (typeof data.message === 'string') {
+        message = data.message;
+      } else if (data.error && typeof data.error === 'object') {
+        message = Object.values(data.error).filter(v => typeof v === 'string').join(', ') || JSON.stringify(data.error);
+      } else if (data.message && typeof data.message === 'object') {
+        message = Object.values(data.message).filter(v => typeof v === 'string').join(', ') || JSON.stringify(data.message);
+      }
+    } else {
+      message = error.message || message;
+    }
     return Promise.reject(new Error(message));
   }
 );

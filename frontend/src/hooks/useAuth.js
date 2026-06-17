@@ -15,16 +15,22 @@ export const useAuth = () => {
 
   const login = useCallback(
     async (email, password) => {
-      const result = await dispatch(loginUser({ email, password }));
-      return result.payload;
+      const resultAction = await dispatch(loginUser({ email, password }));
+      if (loginUser.fulfilled.match(resultAction)) {
+        return resultAction.payload;
+      }
+      return null;
     },
     [dispatch]
   );
-
+ 
   const register = useCallback(
     async (name, email, password, role) => {
-      const result = await dispatch(registerUser({ name, email, password, role }));
-      return result.payload;
+      const resultAction = await dispatch(registerUser({ name, email, password, role }));
+      if (registerUser.fulfilled.match(resultAction)) {
+        return resultAction.payload;
+      }
+      return null;
     },
     [dispatch]
   );
