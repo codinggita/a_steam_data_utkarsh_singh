@@ -26,7 +26,7 @@ const FIFTEEN_MINUTES_MS = 15 * 60 * 1000;
  */
 const generalLimiter = rateLimit({
   windowMs: FIFTEEN_MINUTES_MS, // Rolling time window; counter resets after this duration.
-  max: 100, // Maximum number of requests allowed per IP per window.
+  max: process.env.NODE_ENV === 'development' ? 10000 : 100, // Higher limit for development
   standardHeaders: true, // Sends RateLimit-* headers (RFC draft) so clients know their quota.
   legacyHeaders: false, // Disable old X-RateLimit-* headers (cleaner, use standard ones).
   message: {
@@ -42,7 +42,7 @@ const generalLimiter = rateLimit({
  */
 const authLimiter = rateLimit({
   windowMs: FIFTEEN_MINUTES_MS,
-  max: 10, // Much lower than general — password guessing needs many tries.
+  max: process.env.NODE_ENV === 'development' ? 1000 : 10, // Higher limit for development
   standardHeaders: true,
   legacyHeaders: false,
   message: {

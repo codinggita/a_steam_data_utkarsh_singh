@@ -33,6 +33,14 @@ const router = express.Router();
 
 // ─── Health & system (public) ────────────────────────────────────────────────
 
+/** GET / — root welcome endpoint to avoid 404 */
+router.get('/', (req, res) => {
+  return sendSuccess(res, 200, 'Welcome to the Steam Games API! All endpoints live under /api/v1/...', {
+    status: 'online',
+    healthCheck: '/api/v1/health'
+  });
+});
+
 /** GET /api/v1/health — uptime check for load balancers / monitoring */
 router.get('/api/v1/health', (req, res) => {
   return sendSuccess(res, 200, 'Health', {

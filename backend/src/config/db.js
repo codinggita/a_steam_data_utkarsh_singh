@@ -27,14 +27,29 @@ async function connectDB() {
   const uri = getMongoUri();
 
   try {
-    await mongoose.connect(uri, { serverSelectionTimeoutMS: 15000 });
-    console.log('MongoDB connected');
+    // Try connecting to the configured database
+    console.log('Connecting to database...');
+    await mongoose.connect(uri, { serverSelectionTimeoutMS: 5000 });
+    console.log('MongoDB connected successfully');
   } catch (err) {
-    console.error('MongoDB connection error:', err.message);
+    console.warn('Primary MongoDB connection failed:', err.message);
     if (err.message.includes('bad auth')) {
-      console.error('→ Wrong username/password in Atlas. Reset password in Database Access to match .env');
+      console.warn('→ Authentication failed. Please check your username/password.');
     }
-    process.exit(1);
+    
+    // Fallback to local MongoDB in development mode
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('Attempting fallback to local MongoDB (mongodb://localhost:27017/steam_games_db)...');
+      try {
+        await mongoose.connect('mongodb://localhost:27017/steam_games_db', { serverSelectionTimeoutMS: 5000 });
+        console.log('MongoDB connected (FALLBACK to local database)');
+      } catch (localErr) {
+        console.error('Local MongoDB connection failed:', localErr.message);
+        process.exit(1);
+      }
+    } else {
+      process.exit(1);
+    }
   }
 }
 
