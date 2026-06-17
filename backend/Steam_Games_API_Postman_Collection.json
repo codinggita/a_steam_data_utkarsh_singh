@@ -1,0 +1,1515 @@
+{
+  "info": {
+    "_postman_id": "92def5ae-c3b1-4b4d-8a34-6658332d8810",
+    "name": "Steam Games API",
+    "description": "Postman collection covering all authentication, games catalog, stats, and analytics endpoints of the Steam Games backend API.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health Routes",
+      "item": [
+        {
+          "name": "Check Backend Health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": null,
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/health",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "health"
+              ]
+            },
+            "description": "Uptime check for load balancers, deployment status, and system monitoring."
+          },
+          "response": []
+        },
+        {
+          "name": "System Runtime Info",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": null,
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/system/info",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "system",
+                "info"
+              ]
+            },
+            "description": "Retrieve detailed system environment, Node.js version, and configuration variables."
+          },
+          "response": []
+        },
+        {
+          "name": "System Version Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": null,
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/system/version",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "system",
+                "version"
+              ]
+            },
+            "description": "Check active deployment API version."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Auth Routes",
+      "item": [
+        {
+          "name": "Register User Account",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"gamer123\",\n  \"email\": \"gamer123@example.com\",\n  \"password\": \"SecurePassword123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "register"
+              ]
+            },
+            "description": "Register a new user account with secure password hashing."
+          },
+          "response": []
+        },
+        {
+          "name": "User Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"gamer123@example.com\",\n  \"password\": \"SecurePassword123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Authenticate user credentials and retrieve a JSON Web Token (JWT)."
+          },
+          "response": []
+        },
+        {
+          "name": "User Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": null,
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/logout",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "logout"
+              ]
+            },
+            "description": "Logout user and invalidate the session (client-side token removal)."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "User Routes",
+      "item": [
+        {
+          "name": "Fetch User Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": null,
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/profile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "profile"
+              ]
+            },
+            "description": "Retrieve detailed information of the currently authenticated user."
+          },
+          "response": []
+        },
+        {
+          "name": "Update User Profile",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"pro_gamer_99\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/profile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "profile"
+              ]
+            },
+            "description": "Modify specific fields of the logged-in user profile (e.g. username)."
+          },
+          "response": []
+        },
+        {
+          "name": "Change Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"currentPassword\": \"OldPassword123\",\n  \"newPassword\": \"NewSuperPassword789\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/change-password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "change-password"
+              ]
+            },
+            "description": "Change the password of the active logged-in session securely."
+          },
+          "response": []
+        },
+        {
+          "name": "JWT Profile Playground",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": null,
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/jwt/profile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "jwt",
+                "profile"
+              ]
+            },
+            "description": "Retrieve profile details via standard JWT token payload demonstration."
+          },
+          "response": []
+        },
+        {
+          "name": "JWT Dashboard Playground",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": null,
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/jwt/dashboard",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "jwt",
+                "dashboard"
+              ]
+            },
+            "description": "Access protected dashboard statistics using JWT verification."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Steam/Game Routes",
+      "item": [
+        {
+          "name": "Fetch All Games",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": null,
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/games",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "games"
+              ]
+            },
+            "description": "Fetch lists of Steam games with dynamic search, pagination, genres, platforms, and sort parameters."
+          },
+          "response": []
+        },
+        {
+          "name": "Fetch Game by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": null,
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/games/:appid",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "games",
+                ":appid"
+              ],
+              "variable": [
+                {
+                  "key": "appid",
+                  "value": "570",
+                  "description": "Path parameter appid"
+                }
+              ]
+            },
+            "description": "Retrieve comprehensive details of a single Steam game by its application ID (appid)."
+          },
+          "response": []
+        },
+        {
+          "name": "Search Games",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": null,
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/search/games",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "search",
+                "games"
+              ]
+            },
+            "description": "Perform a case-insensitive fuzzy match across titles, developers, and tags using query query string `?q=keyword`."
+          },
+          "response": []
+        },
+        {
+          "name": "Filter: Free to Play",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": null,
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/games/filter/free-to-play",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "games",
+                "filter",
+                "free-to-play"
+              ]
+            },
+            "description": "Quick preset query returning only games with a cost of 0."
+          },
+          "response": []
+        },
+        {
+          "name": "Filter: VR Only",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": null,
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/games/filter/vr-only",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "games",
+                "filter",
+                "vr-only"
+              ]
+            },
+            "description": "Fetch games that exclusively support Virtual Reality headsets."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Random Game Recommendation",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": null,
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/games/random",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "games",
+                "random"
+              ]
+            },
+            "description": "Pick a random game from the database (ideal for \"Surprise me\" UI widgets)."
+          },
+          "response": []
+        },
+        {
+          "name": "Submit Game Review",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rating\": 5,\n  \"reviewText\": \"Masterpiece of writing and puzzle design!\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/games/:appid/reviews",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "games",
+                ":appid",
+                "reviews"
+              ],
+              "variable": [
+                {
+                  "key": "appid",
+                  "value": "570",
+                  "description": "Path parameter appid"
+                }
+              ]
+            },
+            "description": "Add a review rating and text comment to a specific game. Updates average game score."
+          },
+          "response": []
+        },
+        {
+          "name": "Trending Games List",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": null,
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/trending/games",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "trending",
+                "games"
+              ]
+            },
+            "description": "Get list of trending games based on click/popularity algorithm."
+          },
+          "response": []
+        },
+        {
+          "name": "Latest System News",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": null,
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/news/latest",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "news",
+                "latest"
+              ]
+            },
+            "description": "Retrieve news items from the platform feed."
+          },
+          "response": []
+        },
+        {
+          "name": "Compare Games",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": null,
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/compare/games/:id1/:id2",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "compare",
+                "games",
+                ":id1",
+                ":id2"
+              ],
+              "variable": [
+                {
+                  "key": "id1",
+                  "value": "10",
+                  "description": "Path parameter id1"
+                },
+                {
+                  "key": "id2",
+                  "value": "570",
+                  "description": "Path parameter id2"
+                }
+              ]
+            },
+            "description": "Compare metadata between two games side-by-side."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Recommendations for Game",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": null,
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/recommendations/games/:appid",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "recommendations",
+                "games",
+                ":appid"
+              ],
+              "variable": [
+                {
+                  "key": "appid",
+                  "value": "570",
+                  "description": "Path parameter appid"
+                }
+              ]
+            },
+            "description": "Get related recommendations based on a specific game."
+          },
+          "response": []
+        },
+        {
+          "name": "Check Game Existence",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": null,
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/games/exists/:appid",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "games",
+                "exists",
+                ":appid"
+              ],
+              "variable": [
+                {
+                  "key": "appid",
+                  "value": "570",
+                  "description": "Path parameter appid"
+                }
+              ]
+            },
+            "description": "Quick check if a game exists in database by application ID (appid)."
+          },
+          "response": []
+        },
+        {
+          "name": "Soft Archive Game",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": null,
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/games/:appid/archive",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "games",
+                ":appid",
+                "archive"
+              ],
+              "variable": [
+                {
+                  "key": "appid",
+                  "value": "570",
+                  "description": "Path parameter appid"
+                }
+              ]
+            },
+            "description": "Soft-delete or archive a game (restoring is possible)."
+          },
+          "response": []
+        },
+        {
+          "name": "Restore Archived Game",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": null,
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/games/:appid/restore",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "games",
+                ":appid",
+                "restore"
+              ],
+              "variable": [
+                {
+                  "key": "appid",
+                  "value": "570",
+                  "description": "Path parameter appid"
+                }
+              ]
+            },
+            "description": "Un-archive a previously soft-deleted game."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Game reviews (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rating\": 4,\n  \"reviewText\": \"Updated comment text.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/games/:appid/reviews/:reviewId",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "games",
+                ":appid",
+                "reviews",
+                ":reviewId"
+              ],
+              "variable": [
+                {
+                  "key": "appid",
+                  "value": "570",
+                  "description": "Path parameter appid"
+                },
+                {
+                  "key": "reviewId",
+                  "value": "64f89d8c9735d1001bc5ea77",
+                  "description": "Path parameter reviewId"
+                }
+              ]
+            },
+            "description": "Modify an existing user review for a specific game."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Game review",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": null,
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/games/:appid/reviews/:reviewId",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "games",
+                ":appid",
+                "reviews",
+                ":reviewId"
+              ],
+              "variable": [
+                {
+                  "key": "appid",
+                  "value": "570",
+                  "description": "Path parameter appid"
+                },
+                {
+                  "key": "reviewId",
+                  "value": "64f89d8c9735d1001bc5ea77",
+                  "description": "Path parameter reviewId"
+                }
+              ]
+            },
+            "description": "Delete a submitted game review."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Admin Routes",
+      "item": [
+        {
+          "name": "Access Dashboard Metrics",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": null,
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/dashboard",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "dashboard"
+              ]
+            },
+            "description": "Fetch administrative database metrics, total active users, and system server status."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Game Entry",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"appid\": 999999,\n  \"name\": \"Indie Space Explorer\",\n  \"developer\": \"CosmoDevs\",\n  \"publisher\": \"IndieGalaxy\",\n  \"platforms\": [\n    \"windows\"\n  ],\n  \"price\": 14.99,\n  \"genres\": [\n    \"Adventure\",\n    \"Indie\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/games",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "games"
+              ]
+            },
+            "description": "Register a new game entry in the database catalog (Admins only)."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Game Entry",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": null,
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/games/:appid",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "games",
+                ":appid"
+              ],
+              "variable": [
+                {
+                  "key": "appid",
+                  "value": "570",
+                  "description": "Path parameter appid"
+                }
+              ]
+            },
+            "description": "Permanently remove a game from the active database."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Product Routes",
+      "item": [
+        {
+          "name": "Fetch Store Products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": null,
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/products",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "products"
+              ]
+            },
+            "description": "Retrieve merchandise products, including gaming controllers, mousepads, posters, and virtual physical keys."
+          },
+          "response": []
+        },
+        {
+          "name": "Fetch Product Details",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": null,
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/products/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "products",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "prod_90123",
+                  "description": "Path parameter id"
+                }
+              ]
+            },
+            "description": "Retrieve inventory count and specification details of a specific store product."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Analytics Routes",
+      "item": [
+        {
+          "name": "Top Rated Games Analytics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": null,
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/analytics/games/top-rated",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "analytics",
+                "games",
+                "top-rated"
+              ]
+            },
+            "description": "Get analytics on the top-rated games in the catalog."
+          },
+          "response": []
+        },
+        {
+          "name": "Most Downloaded Games Analytics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": null,
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/analytics/games/most-downloaded",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "analytics",
+                "games",
+                "most-downloaded"
+              ]
+            },
+            "description": "Get analytics on the most-downloaded games in the catalog."
+          },
+          "response": []
+        },
+        {
+          "name": "Revenue Analysis",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": null,
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/analytics/games/revenue",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "analytics",
+                "games",
+                "revenue"
+              ]
+            },
+            "description": "Retrieve estimated revenue breakdown across the database games."
+          },
+          "response": []
+        },
+        {
+          "name": "Platform Distribution Analytics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": null,
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/analytics/games/platform-distribution",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "analytics",
+                "games",
+                "platform-distribution"
+              ]
+            },
+            "description": "Retrieve platform distribution breakdown (Windows, Mac, Linux)."
+          },
+          "response": []
+        },
+        {
+          "name": "Genre Distribution Analytics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": null,
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/analytics/games/genre-distribution",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "analytics",
+                "games",
+                "genre-distribution"
+              ]
+            },
+            "description": "Get genre popularity and representation breakdown."
+          },
+          "response": []
+        },
+        {
+          "name": "Trending Games",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": null,
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/analytics/games/trending",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "analytics",
+                "games",
+                "trending"
+              ]
+            },
+            "description": "Get list of trending games with recent engagement metrics."
+          },
+          "response": []
+        },
+        {
+          "name": "Release Trends",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": null,
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/analytics/games/release-trends",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "analytics",
+                "games",
+                "release-trends"
+              ]
+            },
+            "description": "Get statistics on release dates and volume by year/month."
+          },
+          "response": []
+        },
+        {
+          "name": "User Activity Analytics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": null,
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/analytics/games/user-activity",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "analytics",
+                "games",
+                "user-activity"
+              ]
+            },
+            "description": "Get overview of review rates, registration trends, and activity metrics."
+          },
+          "response": []
+        },
+        {
+          "name": "Wishlist Analysis",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": null,
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/analytics/games/wishlist-analysis",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "analytics",
+                "games",
+                "wishlist-analysis"
+              ]
+            },
+            "description": "Analyze game additions and presence in wishlists."
+          },
+          "response": []
+        },
+        {
+          "name": "Review Sentiment Analysis",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": null,
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/analytics/games/review-analysis",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "analytics",
+                "games",
+                "review-analysis"
+              ]
+            },
+            "description": "Analyze review text sentiments and ratings breakdown."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Stats Routes",
+      "item": [
+        {
+          "name": "Total Games Count",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": null,
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/stats/games/count",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "stats",
+                "games",
+                "count"
+              ]
+            },
+            "description": "Get the total number of games registered in the database."
+          },
+          "response": []
+        },
+        {
+          "name": "Top Rated Stats",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": null,
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/stats/games/top-rated",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "stats",
+                "games",
+                "top-rated"
+              ]
+            },
+            "description": "Quick statistics overview of the highest-rated games."
+          },
+          "response": []
+        },
+        {
+          "name": "Most Downloaded Stats",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": null,
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/stats/games/most-downloaded",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "stats",
+                "games",
+                "most-downloaded"
+              ]
+            },
+            "description": "Quick statistics overview of the most downloaded games."
+          },
+          "response": []
+        },
+        {
+          "name": "Average Game Price",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": null,
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/stats/games/average-price",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "stats",
+                "games",
+                "average-price"
+              ]
+            },
+            "description": "Calculate average game price across the entire catalog."
+          },
+          "response": []
+        },
+        {
+          "name": "Average Game Rating",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": null,
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/stats/games/average-rating",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "stats",
+                "games",
+                "average-rating"
+              ]
+            },
+            "description": "Calculate average user ratings across the database."
+          },
+          "response": []
+        },
+        {
+          "name": "Genre Count Summary",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": null,
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/stats/games/genre-count",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "stats",
+                "games",
+                "genre-count"
+              ]
+            },
+            "description": "Get counts of games grouped by individual genres."
+          },
+          "response": []
+        },
+        {
+          "name": "Platform Count Summary",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": null,
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/stats/games/platform-count",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "stats",
+                "games",
+                "platform-count"
+              ]
+            },
+            "description": "Get counts of games grouped by supported platforms."
+          },
+          "response": []
+        },
+        {
+          "name": "Free to Play Games Count",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": null,
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/stats/games/free-to-play-count",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "stats",
+                "games",
+                "free-to-play-count"
+              ]
+            },
+            "description": "Count total number of free games in database."
+          },
+          "response": []
+        },
+        {
+          "name": "Multiplayer Games Count",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": null,
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/stats/games/multiplayer-count",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "stats",
+                "games",
+                "multiplayer-count"
+              ]
+            },
+            "description": "Count total number of multiplayer games."
+          },
+          "response": []
+        },
+        {
+          "name": "Monthly Releases Stats",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": null,
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/stats/games/monthly-releases",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "stats",
+                "games",
+                "monthly-releases"
+              ]
+            },
+            "description": "Get release volume trends grouped by calendar months."
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string",
+      "description": "Paste your JWT token here after registering or logging in to test protected endpoints."
+    }
+  ]
+}
