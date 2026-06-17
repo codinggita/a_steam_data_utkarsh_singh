@@ -32,7 +32,6 @@ require('dotenv').config();
 
 const express = require('express'); // Web framework — creates app, routes, middleware pipeline.
 const cors = require('cors'); // Allows React (localhost:3000) to call API (localhost:5000) from the browser.
-const helmet = require('helmet'); // Sets security-related HTTP response headers.
 const morgan = require('morgan'); // Auto-logs: GET /api/v1/games 200 12ms - 1234
 
 const connectDB = require('./src/config/db'); // MongoDB connection (Step 2).
@@ -42,21 +41,6 @@ const { generalLimiter } = require('./src/middlewares/rateLimiter.middleware'); 
 const errorMiddleware = require('./src/middlewares/error.middleware'); // Global error catcher (Step 5).
 
 const app = express(); // Single Express application instance for this process.
-
-// ─── 0) HELMET — Sets security HTTP headers. Custom CSP configured for premium HTML documentation page ───
-app.use(
-  helmet({
-    contentSecurityPolicy: {
-      directives: {
-        defaultSrc: ["'self'"],
-        scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://cdn.jsdelivr.net"],
-        styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", "https://cdn.jsdelivr.net"],
-        fontSrc: ["'self'", "https://fonts.gstatic.com"],
-        imgSrc: ["'self'", "data:", "https://images.unsplash.com", "https://assets.steamstatic.com", "https://cdn.jsdelivr.net"]
-      }
-    }
-  })
-);
 
 // ─── 1) CORS — must run early so preflight OPTIONS requests get correct headers ───
 app.use(cors());
@@ -75,13 +59,6 @@ app.use(generalLimiter);
 
 // ─── 6) All API routes — games, auth, analytics, stats, admin, health, etc. ───
 app.use(routes);
-
-// ─── 6.5) Centralized 404 Route Handler — Intercepts unmatched paths ───
-app.use((req, res, next) => {
-  const err = new Error(`Route not found: ${req.method} ${req.originalUrl}`);
-  err.statusCode = 404;
-  next(err);
-});
 
 // ─── 7) Error handler — FOUR parameters (err, req, res, next) — Express knows it's special ───
 // Nothing should be registered AFTER this except maybe a 404 handler (we use routes for that).
