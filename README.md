@@ -8,6 +8,89 @@ This workspace consists of two separate, decoupled applications:
 
 ---
 
+## 🔍 Problem Statement & Resolution
+
+### The Problem
+Although the MongoDB database contained 65,521 raw game entries, both the local and deployed dashboards showed **zero data** (`0 TOTAL` registry entries, empty analytics cards, and blank dashboard widgets). This occurred due to several architecture mismatches:
+1. **Invisible Documents (`isArchived`)**: The backend service layer queries games with `{ isArchived: false }` to filter out soft-deleted files. Because the raw MongoDB documents lacked the `isArchived` field, MongoDB returned zero matches.
+2. **Key & Type Mismatches**: The raw database stored fields like `appid` and `price` as strings instead of numbers. It also had `name` instead of `title`, and semicolon-separated strings instead of arrays for `genres` and `categories`.
+3. **Redux Payload Key Mismatches**: The frontend Redux store expected keys like `averagePrice`, `count`, and `averageRating` from the backend endpoints, whereas the backend actually returned `avgPrice`, `total`, and `avgRating`.
+4. **Empty Descriptions**: The Mongoose schema lacked a `description` field, meaning the frontend **MANIFESTO BRIEFING** section displayed empty placeholders.
+
+### The Resolution
+We resolved these issues by executing a three-phase database transformation and normalizing the API integration layer:
+1. **Schema Migration (`migrateDb.js`)**: Converted all 65,521 raw documents in-place, parsing types, mapping keys (`name` $\rightarrow$ `title`), parsing arrays, and adding `isArchived: false` so that they are live in queries.
+2. **Dynamic Summaries (`migrateDescriptions.js`)**: Created the schema property and generated dynamic summaries for all games based on developer, publisher, and genre fields.
+3. **Realistic Metrics (`updateRatings.js`)**: Populated realistic ratings (5.5 - 9.6) and logarithmic download numbers to feed the advanced analytics widgets.
+4. **Redux Synchronization (`analyticsSlice.js`)**: Adjusted frontend slices to parse backend payload keys correctly and compute distributions/percentages on the fly.
+
+### 🔄 Data Retrieval Sequence Flow
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor User as User Browser
+    participant FE as React UI Components
+    participant Store as Redux Store (Slices)
+    participant API as Axios Service Client
+    participant Express as Express Web Server
+    participant DB as MongoDB Atlas (Mongoose)
+
+    User->>FE: Accesses Analytics / Registry Dashboard
+    FE->>Store: dispatch(fetchStatsSummary())
+    Store->>API: analyticsService.getTotalCount()
+    API->>Express: GET /api/v1/stats/games/count
+    Express->>DB: Game.countDocuments({ isArchived: false })
+    DB-->>Express: Returns raw total (65,521)
+    Express-->>API: Response payload: { success: true, data: { total: 65521 } }
+    API-->>Store: Normalizes keys: total -> totalCount (saves to state)
+    Store-->>FE: Component updates with live state
+    FE-->>User: Renders "65,521 TOTAL ENTRIES" & full analytics details
+```
+
+---
+
+## 🗺️ System Architecture & Data Flow
+
+```mermaid
+graph TD
+    subgraph Client ["Client Side (Frontend)"]
+        Browser["User Browser"]
+        React["React UI Components"]
+        Redux["Redux Toolkit (State Management)"]
+        Axios["Axios Services (HTTP API Client)"]
+    end
+
+    subgraph Server ["Server Side (Backend)"]
+        Express["Express Router (/api/v1/*)"]
+        Middlewares["Middlewares (Auth, Rate Limiters, Logs)"]
+        Controllers["Controllers (Request/Response Handlers)"]
+        Services["Services (Business Logic & Aggregations)"]
+        Mongoose["Mongoose Models (Game, User Schema)"]
+    end
+
+    subgraph Storage ["Data Store"]
+        MongoDB[("MongoDB Atlas Database")]
+    end
+
+    subgraph Operations ["Operations & Data Setup"]
+        Scripts["Scripts (seed, migrate, updateRatings)"]
+    end
+
+    Browser <--> React
+    React <--> Redux
+    Redux <--> Axios
+    Axios <-->|HTTP Calls / JSON Payloads| Express
+    Express --> Middlewares
+    Middlewares --> Controllers
+    Controllers --> Services
+    Services --> Mongoose
+    Mongoose <--> MongoDB
+    Scripts -->|Write / Update / Schema Sync| MongoDB
+```
+
+---
+
 ## 🛠️ Technology Stack
 
 ### Backend
