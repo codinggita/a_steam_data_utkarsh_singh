@@ -27,6 +27,7 @@ const gameSchema = new mongoose.Schema(
   {
     appid: { type: Number, required: true, unique: true }, // Steam numeric id — unique index for fast lookup.
     title: { type: String, required: true, trim: true },
+    description: { type: String, trim: true },
     developer: { type: String, trim: true },
     publisher: { type: String, trim: true },
     genres: [{ type: String, trim: true }], // Array of strings for multi-label classification.
