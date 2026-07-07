@@ -34,11 +34,11 @@ export const fetchStatsSummary = createAsyncThunk(
       ]);
 
       return {
-        totalCount: countRes.data.count || 0,
-        averagePrice: priceRes.data.averagePrice || 0,
-        averageRating: ratingRes.data.averageRating || 0,
-        genreCounts: genreRes.data.genres || [],
-        platformCounts: platformRes.data.platforms || [],
+        totalCount: countRes.data.total || 0,
+        averagePrice: priceRes.data.avgPrice || 0,
+        averageRating: ratingRes.data.avgRating || 0,
+        genreCounts: genreRes.data.data || [],
+        platformCounts: platformRes.data.data || {},
       };
     } catch (err) {
       return rejectWithValue(err.message);
@@ -59,13 +59,37 @@ export const fetchDashboardChartsData = createAsyncThunk(
         analyticsService.getMostDownloadedGames(),
       ]);
 
+      // Calculate total count of genres to compute percentage
+      const rawGenres = genreRes.data.data || [];
+      const totalGenreGames = rawGenres.reduce((sum, g) => sum + (g.count || 0), 0) || 1;
+      const genreDistribution = rawGenres.map(g => ({
+        name: String(g._id).toUpperCase(),
+        count: g.count,
+        percentage: (g.count / totalGenreGames) * 100
+      }));
+
+      // Calculate total count of platforms to compute percentage
+      const rawPlatformFacet = platformRes.data.data && platformRes.data.data[0] ? platformRes.data.data[0] : null;
+      let platformDistribution = [];
+      if (rawPlatformFacet) {
+        const winCount = rawPlatformFacet.windows && rawPlatformFacet.windows[0] ? rawPlatformFacet.windows[0].count : 0;
+        const macCount = rawPlatformFacet.mac && rawPlatformFacet.mac[0] ? rawPlatformFacet.mac[0].count : 0;
+        const linuxCount = rawPlatformFacet.linux && rawPlatformFacet.linux[0] ? rawPlatformFacet.linux[0].count : 0;
+        const totalPlatGames = (winCount + macCount + linuxCount) || 1;
+        platformDistribution = [
+          { name: 'WINDOWS', percentage: (winCount / totalPlatGames) * 100 },
+          { name: 'MAC', percentage: (macCount / totalPlatGames) * 100 },
+          { name: 'LINUX', percentage: (linuxCount / totalPlatGames) * 100 }
+        ];
+      }
+
       return {
-        revenueAnalysis: revenueRes.data.revenue || [],
-        platformDistribution: platformRes.data.distribution || [],
-        genreDistribution: genreRes.data.distribution || [],
-        trendingGames: trendingRes.data.games || [],
-        topRatedGames: topRatedRes.data.games || [],
-        mostDownloadedGames: mostDownloadedRes.data.games || [],
+        revenueAnalysis: revenueRes.data.data || [],
+        platformDistribution: platformDistribution,
+        genreDistribution: genreDistribution,
+        trendingGames: trendingRes.data.data || [],
+        topRatedGames: topRatedRes.data.data || [],
+        mostDownloadedGames: mostDownloadedRes.data.data || [],
       };
     } catch (err) {
       return rejectWithValue(err.message);
